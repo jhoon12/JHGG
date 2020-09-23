@@ -1,15 +1,16 @@
 import React, { useState, useCallback } from "react";
 import * as S from "./Style/MainStyle";
 import { Route } from "react-router-dom";
+import SearchUser from "./SearchUser";
 const Main = ({ history }) => {
   const [text, EditText] = useState("");
   const GoToTotal = () => {
     if (text === "") {
       alert("소환사를 입력하세요");
       return;
-    } else {
-      history.push(`/search/${text}`);
     }
+    history.push(`/search/${text}`);
+    
   };
   function enterkey(e) {
     const ENTER_KEY_CODE = 13;
@@ -22,28 +23,7 @@ const Main = ({ history }) => {
   }, []);
   return (
     <S.Container>
-      <S.head>
-        <S.headTitle>
-          <S.smallTitle>OP.GG</S.smallTitle>
-          <NavItem
-            imgSrc="https://opgg-gnb.akamaized.net/static/images/icons/img-navi-lol-white.svg"
-            hover="none"
-          >
-            리그오브레전드
-          </NavItem>
-        </S.headTitle>
-        <S.SelectGame>
-          <GameKinds></GameKinds>
-        </S.SelectGame>
-        <S.loginSet>
-          <S.login>로그인</S.login>
-        </S.loginSet>
-      </S.head>
-      <S.Background>
-        <S.SelectMenu>
-          <Menu></Menu>
-        </S.SelectMenu>
-      </S.Background>
+      <HeaderGG></HeaderGG>
       <S.body>
         <S.TitleImg src="https://attach.s.op.gg/logo/20200917203051.f544a6d3dce2fe709b5aac0b8d4ecbdf.png"></S.TitleImg>
         <S.SelectBox>
@@ -51,7 +31,7 @@ const Main = ({ history }) => {
             placeholder="소환사명, 소환사명, ..."
             onChange={textChange}
             value={text}
-            onKeyDown={enterkey}  
+            onKeyDown={enterkey}
           ></S.Select>
           <S.SelectBtnBox>
             <S.SelectBtn onClick={GoToTotal}>.GG</S.SelectBtn>
@@ -63,7 +43,7 @@ const Main = ({ history }) => {
   );
 };
 
-const NavItem = ({ imgSrc, children }) => {
+export const NavItem = ({ imgSrc, children }) => {
   let URL;
   switch (children) {
     case "next":
@@ -95,7 +75,7 @@ const NavItem = ({ imgSrc, children }) => {
   );
 };
 
-const GameKinds = () => {
+export const GameKinds = () => {
   const navItemArray = [
     {
       name: "next",
@@ -137,7 +117,7 @@ const GameKinds = () => {
   );
 };
 
-const Menu = () => {
+export const Menu = (activeIndex) => {
   let URL;
   const textMenu = [
     "#집에있자",
@@ -174,18 +154,47 @@ const Menu = () => {
     }
   });
 
+  return textMenu.map(
+    (text, index) => (
+      (URL = URLmap(text)),
+      (
+        <S.MenuItem href={URL} target="_blank" isActive={index === activeIndex}>
+          {text}
+        </S.MenuItem>
+      )
+    )
+  );
+};
+
+export const HeaderGG = ({ children }) => {
+  const GoToMain = () => {
+    window.history.back();
+  };
   return (
     <>
-      {textMenu.map(
-        (text, index) => (
-          (URL = URLmap(text)),
-          (
-            <S.MenuItem href={URL} target="_blank" isActive={index === 0}>
-              {text}
-            </S.MenuItem>
-          )
-        )
-      )}
+      <S.head>
+        <S.headTitle>
+          <S.smallTitle onClick={GoToMain}>JH.GG</S.smallTitle>
+          <NavItem
+            imgSrc="https://opgg-gnb.akamaized.net/static/images/icons/img-navi-lol-white.svg"
+            hover="none"
+          >
+            리그오브레전드
+          </NavItem>
+        </S.headTitle>
+        <S.SelectGame>
+          <GameKinds></GameKinds>
+        </S.SelectGame>
+        <S.loginSet>
+          <S.login href="https://member.op.gg/?redirect_url=">로그인</S.login>
+        </S.loginSet>
+      </S.head>
+      <S.Background>
+        <S.SelectMenu>
+          {Menu(0)}
+          {children}
+        </S.SelectMenu>
+      </S.Background>
     </>
   );
 };

@@ -35,6 +35,7 @@ export const smallTitle = styled.div`
   font-weight: bolder;
   color: white;
   letter-spacing: -1px;
+  cursor: pointer;
 `;
 
 export const SelectGame = styled.div`
@@ -79,7 +80,7 @@ export const loginSet = styled.div`
   justify-content: center;
 `;
 
-export const login = styled.div`
+export const login = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,6 +91,8 @@ export const login = styled.div`
   font-size: 12px;
   color: white;
   border-radius: 5px;
+  cursor: pointer;
+  text-decoration:none;
 `;
 
 export const Background = styled.div`
@@ -142,6 +145,8 @@ export const body = styled.div`
 export const TitleImg = styled.img`
   width: 20%;
   padding: 15px 0 24px;
+  cursor: pointer;
+  
 `;
 export const MainSelectBox = styled.div`
   display: flex;
