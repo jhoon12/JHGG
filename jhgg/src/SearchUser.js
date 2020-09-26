@@ -8,7 +8,11 @@ const SearchUser = (props) => {
   const [userData, setUserData] = useState(null);
   const [inputName, SetInputName] = useState("");
   const [userLeagueData, setUserLeagueData] = useState(null);
-  const [userTier, setUserTier] = useState(null);
+  const [userTierFree, setUserTierFree] = useState(null);
+  const [usertierSolo, setUserTierSolo] = useState(null);
+  const [tier, setTier] = useState(null);
+  const [soloRank, SetSoloRank] = useState(null);
+  const [freeRank, SetFreeRank] = useState(null);
 
   const ChangeInput = (e) => {
     SetInputName(e.target.value);
@@ -18,8 +22,15 @@ const SearchUser = (props) => {
       alert("소환사를 입력하세요");
       return;
     }
-    props.history.push(`/search/${inputName}`);
+    window.location.replace(`/search/${inputName}`);
   };
+  const enterkey = (e) => {
+    const ENTER_KEY_CODE = 13;
+    if (e.keyCode === ENTER_KEY_CODE) {
+      GoToTotal();
+    }
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -32,7 +43,7 @@ const SearchUser = (props) => {
           }
         );
         setUserData(data);
-        console.log(data);
+        // console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -49,8 +60,10 @@ const SearchUser = (props) => {
             },
           }
         );
-        const ReArab = () => {
-          switch (res.data[0].rank) {
+        const ReArab = (index) => {
+          switch (
+            res.data[index].rank //기준이 자랭
+          ) {
             case "I":
               return 1;
             case "II":
@@ -61,14 +74,36 @@ const SearchUser = (props) => {
               return 4;
           }
         };
-        setUserLeagueData(res);
-        console.log(res.data);
-        setUserTier(ReArab());
+        setUserLeagueData(res); //리그데이터저장
+        setTier(res.data[0].tier.toLowerCase()); //티어소문자변경
+        setUserTierFree(ReArab(0)); //티어아라비아로변경
+        setUserTierSolo(ReArab(1));
+        SetSoloRank(res.data[1]); //솔랭데이터저장
+        SetFreeRank(res.data[0]); //자랭데이터저장
       } catch (err) {
         console.log(err);
       }
     })();
   }, [userData]);
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log(userData.accountId);
+        const res = await axios.get(
+          `/kr.api.riotgames.com/lol/match/v4/matchlists/by-account/${userData.accountId}`,
+          {
+            headers: {
+              "X-Riot-Token": BaseKey,
+            },
+          }
+        );
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [userData]);
+
   return (
     <>
       <HeaderGG>
@@ -78,33 +113,109 @@ const SearchUser = (props) => {
             placeholder="소환사명, 소환사명, ..."
             onChange={ChangeInput}
             value={inputName}
+            onKeyDown={enterkey}
           ></S.Search>
-          <S.SearchBtn onClick={GoToTotal}>.GG</S.SearchBtn>
+          <S.SearchBtn
+            onClick={() => {
+              GoToTotal();
+            }}
+          >
+            .GG
+          </S.SearchBtn>
         </S.SearchBox>
       </HeaderGG>
       <S.MainViewBox>
         <S.ProfileBox>
-          {userData && (
+          {userData && tier && (
             <S.ImgBackGround
-              src={`https://opgg-static.akamaized.net/images/borders2/${userData}.png`}
+              src={`https://opgg-static.akamaized.net/images/borders2/${tier}.png`}
             >
               <S.profileImg
                 src={`http://ddragon.leagueoflegends.com/cdn/10.19.1/img/profileicon/${userData.profileIconId}.png`}
               />
             </S.ImgBackGround>
           )}
-          <div>{props.match.params.userName}</div>
+          <S.InfoBox>
+            <S.UserName>{props.match.params.userName}</S.UserName>
+            <S.toolBox>
+              <S.reload
+                onClick={() => {
+                  window.location.replace(
+                    `/search/${props.match.params.userName}`
+                  );
+                }}
+              >
+                전적 갱신
+              </S.reload>
+              <S.howMuchTime
+                href={`http://ifi.gg/summoner/${props.match.params.userName}`}
+              >
+                롤 몇 시간 했는지 궁금해?
+                <S.howMuchImg src="https://opgg-static.akamaized.net/images/img-nopgg-banner@2x.png" />
+              </S.howMuchTime>
+            </S.toolBox>
+          </S.InfoBox>
         </S.ProfileBox>
+        <S.line />
+        <S.MainContainer>
+          {userLeagueData && soloRank && freeRank && (
+            <S.RankInfoBox>
+              <S.soloRankBox>
+                <S.SoloRankImg
+                  src={`https://opgg-static.akamaized.net/images/medals/${userLeagueData.data[1].tier}_${usertierSolo}.png?image=q_auto&v=1`}
+                />
+                <S.SolorRankInfo>
+                  <S.RankType>솔로랭크</S.RankType>
+                  <S.soloTier>
+                    {soloRank.tier} {usertierSolo}
+                  </S.soloTier>
+                  <S.LPBox>
+                    <S.LP>{`${soloRank.leaguePoints} LP `} </S.LP>
+                    <div> {`/  ${soloRank.wins}승 `}</div>
+                    <div>{` ${soloRank.losses}패`}</div>
+                  </S.LPBox>
+
+                  <div>
+                    {`승률 ${Math.round(
+                      (soloRank.wins / (soloRank.wins + soloRank.losses)) * 100
+                    )}%`}
+                  </div>
+                </S.SolorRankInfo>
+              </S.soloRankBox>
+
+              <S.FreeRankBox>
+                <S.SoloRankImg
+                  src={`https://opgg-static.akamaized.net/images/medals/${userLeagueData.data[0].tier}_${usertierSolo}.png?image=q_auto&v=1`}
+                />
+                <S.SolorRankInfo>
+                  <S.RankType>자유 5:5 랭크</S.RankType>
+                  <S.soloTier>
+                    {freeRank.tier} {userTierFree}
+                  </S.soloTier>
+                  <S.LPBox>
+                    <S.LP>{`${freeRank.leaguePoints} LP `} </S.LP>
+                    <div> {`/  ${freeRank.wins}승 `}</div>
+                    <div>{` ${freeRank.losses}패`}</div>
+                  </S.LPBox>
+
+                  <div>
+                    {`승률 ${Math.round(
+                      (freeRank.wins / (freeRank.wins + freeRank.losses)) * 100
+                    )}%`}
+                  </div>
+                </S.SolorRankInfo>
+              </S.FreeRankBox>
+            </S.RankInfoBox>
+          )}
+          <S.PvPListBox>asd</S.PvPListBox>
+        </S.MainContainer>
       </S.MainViewBox>
     </>
   );
 };
 export default SearchUser;
-
-// {userLeagueData&&(
-//   <>
-//   <img src={`https://opgg-static.akamaized.net/images/medals/${userLeagueData.data[0].tier}_${userTier}.png?image=q_auto&v=1`}/>
-//   <img src={`https://opgg-static.akamaized.net/images/medals/${userLeagueData.data[1].tier}_${userTier}.png?image=q_auto&v=1`}/>
-//   </>
-// )
-// }
+{
+  /* <img
+src={`https://opgg-static.akamaized.net/images/medals/${userLeagueData.data[0].tier}_${userTier}.png?image=q_auto&v=1`}
+/> */
+}

@@ -168,7 +168,7 @@ export const Menu = (activeIndex) => {
 
 export const HeaderGG = ({ children }) => {
   const GoToMain = () => {
-    window.history.back();
+    window.location.replace("/");
   };
   return (
     <>
