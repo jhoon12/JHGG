@@ -105,7 +105,7 @@ const SearchUser = (props) => {
   }, [userData]);
 
   return (
-    <>
+    <S.Container>
       <HeaderGG>
         <S.SearchBox>
           <S.country>KR</S.country>
@@ -210,7 +210,7 @@ const SearchUser = (props) => {
           <S.PvPListBox>asd</S.PvPListBox>
         </S.MainContainer>
       </S.MainViewBox>
-    </>
+    </S.Container>
   );
 };
 export default SearchUser;

@@ -185,3 +185,6 @@ export const MainContainer = styled.div`
 export const PvPListBox = styled.div`
   flex:1;
 `
+export const Container = styled.div`
+  background-color:#eaeaea;
+`
