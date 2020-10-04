@@ -1,36 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useC } from "react";
 import BaseKey from "./API";
 import axios from "axios";
 import { Route } from "react-router-dom";
 import * as S from "./Style/SearchUserStyle";
 import Main, { NavItem, GameKinds, Menu, HeaderGG } from "./Main";
 const SearchUser = (props) => {
-  const [userData, setUserData] = useState(null);
-  const [inputName, SetInputName] = useState("");
-  const [userLeagueData, setUserLeagueData] = useState(null);
-  const [userTierFree, setUserTierFree] = useState(null);
-  const [usertierSolo, setUserTierSolo] = useState(null);
-  const [tier, setTier] = useState(null);
-  const [soloRank, SetSoloRank] = useState(null);
-  const [freeRank, SetFreeRank] = useState(null);
+  const [userData, setUserData] = useState(null); //유저데이터
+  const [inputName, SetInputName] = useState(""); //다른 유저 검색
+  const [userLeagueData, setUserLeagueData] = useState(null); //리그데이터
+  const [userTierFree, setUserTierFree] = useState(null); //자랭 아라비아
+  const [usertierSolo, setUserTierSolo] = useState(null); //솔랭 아라비아
+  const [soloRank, SetSoloRank] = useState(null); //솔랭 정보
+  const [freeRank, SetFreeRank] = useState(null); //자랭 정보
+  const [matches, SetMatches] = useState([]); //전적 정보
 
   const ChangeInput = (e) => {
     SetInputName(e.target.value);
-  };
+  }; //유저 검색창
   const GoToTotal = () => {
     if (inputName === "") {
       alert("소환사를 입력하세요");
       return;
     }
     window.location.replace(`/search/${inputName}`);
-  };
+  }; //다른 유저 페이지로 이동
   const enterkey = (e) => {
     const ENTER_KEY_CODE = 13;
     if (e.keyCode === ENTER_KEY_CODE) {
       GoToTotal();
     }
+  }; //엔터키
+  const SetRankData = (queueType, data) => {
+    if (queueType === "RANKED_SOLO_5x5") {
+      SetSoloRank(data[0]);
+      SetFreeRank(data[1]);
+    } else if (queueType === "RANKED_FLEX_SR") {
+      SetSoloRank(data[1]);
+      SetFreeRank(data[0]);
+    }
   };
-
   useEffect(() => {
     (async () => {
       try {
@@ -48,7 +56,7 @@ const SearchUser = (props) => {
         console.log(err);
       }
     })();
-  }, []);
+  }, []); //유저 데이터
   useEffect(() => {
     (async () => {
       try {
@@ -75,35 +83,58 @@ const SearchUser = (props) => {
           }
         };
         setUserLeagueData(res); //리그데이터저장
-        setTier(res.data[0].tier.toLowerCase()); //티어소문자변경
-        setUserTierFree(ReArab(0)); //티어아라비아로변경
-        setUserTierSolo(ReArab(1));
-        SetSoloRank(res.data[1]); //솔랭데이터저장
-        SetFreeRank(res.data[0]); //자랭데이터저장
+        setUserTierFree(ReArab(0));
+        setUserTierSolo(ReArab(1)); //티어아라비아로변경
+        SetRankData(res.data[0].queueType, res.data);
       } catch (err) {
         console.log(err);
       }
     })();
-  }, [userData]);
+  }, [userData]); //랭크 데이터 가져오기
   useEffect(() => {
+    console.log(matches);
     (async () => {
       try {
         console.log(userData.accountId);
-        const res = await axios.get(
-          `/kr.api.riotgames.com/lol/match/v4/matchlists/by-account/${userData.accountId}`,
+        const { data } = await axios.get(
+          `/lol/match/v4/matchlists/by-account/${userData.accountId}`,
           {
             headers: {
               "X-Riot-Token": BaseKey,
             },
           }
         );
-        console.log(res);
+        SetMatches(data.matches);
       } catch (err) {
         console.log(err);
       }
     })();
-  }, [userData]);
+  }, [userData]); //매치 데이터 가져오기
 
+  useEffect(() => {
+    matches.forEach((e)=>{
+      console.log(e);
+    })
+    // const matchesAll = async () => {
+    //   try {
+    //     console.log(matches.gameId)
+    //     const res = await axios.get(
+    //       `/lol/match/v4/matches/${matches}`,
+    //       {
+    //         headers: {
+    //           "X-Riot-Token": BaseKey,
+    //         },
+    //       }
+    //     );
+    //     console.log(res.data);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
+    // Promise.all(matches.forEach((element,index) => {
+    //   matchesAll(element)
+    // }))
+  }, [matches]);
   return (
     <S.Container>
       <HeaderGG>
@@ -126,14 +157,18 @@ const SearchUser = (props) => {
       </HeaderGG>
       <S.MainViewBox>
         <S.ProfileBox>
-          {userData && tier && (
+          {userData && soloRank && (
             <S.ImgBackGround
-              src={`https://opgg-static.akamaized.net/images/borders2/${tier}.png`}
+              src={`https://opgg-static.akamaized.net/images/borders2/${soloRank.tier.toLowerCase()}.png`}
             >
               <S.profileImg
+                onError={(e) =>
+                  (e.target.src =
+                    "https://opgg-static.akamaized.net/images/profile_icons/profileIcon7.jpg?image=q_auto&v=1518361200")
+                }
                 src={`http://ddragon.leagueoflegends.com/cdn/10.19.1/img/profileicon/${userData.profileIconId}.png`}
               />
-            </S.ImgBackGround>
+            </S.ImgBackGround> //테두리
           )}
           <S.InfoBox>
             <S.UserName>{props.match.params.userName}</S.UserName>
@@ -162,8 +197,9 @@ const SearchUser = (props) => {
             <S.RankInfoBox>
               <S.soloRankBox>
                 <S.SoloRankImg
-                  src={`https://opgg-static.akamaized.net/images/medals/${userLeagueData.data[1].tier}_${usertierSolo}.png?image=q_auto&v=1`}
+                  src={`https://opgg-static.akamaized.net/images/medals/${soloRank.tier}_${usertierSolo}.png?image=q_auto&v=1`}
                 />
+                {/* 솔랭 이미지 */}
                 <S.SolorRankInfo>
                   <S.RankType>솔로랭크</S.RankType>
                   <S.soloTier>
@@ -185,7 +221,7 @@ const SearchUser = (props) => {
 
               <S.FreeRankBox>
                 <S.SoloRankImg
-                  src={`https://opgg-static.akamaized.net/images/medals/${userLeagueData.data[0].tier}_${usertierSolo}.png?image=q_auto&v=1`}
+                  src={`https://opgg-static.akamaized.net/images/medals/${freeRank.tier}_${usertierSolo}.png?image=q_auto&v=1`}
                 />
                 <S.SolorRankInfo>
                   <S.RankType>자유 5:5 랭크</S.RankType>
@@ -214,8 +250,3 @@ const SearchUser = (props) => {
   );
 };
 export default SearchUser;
-{
-  /* <img
-src={`https://opgg-static.akamaized.net/images/medals/${userLeagueData.data[0].tier}_${userTier}.png?image=q_auto&v=1`}
-/> */
-}
