@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css, createGlobalStyle } from "styled-components";
 
+
 export const SearchBox = styled.div`
   background-color: white;
   width: 340px;
@@ -50,13 +51,13 @@ export const MainViewBox = styled.div`
   flex: 1;
   margin: 0 auto;
   width: 1000px;
-  height: 100vh;
+
+  min-height:100vh;
 `;
 export const ProfileBox = styled.div`
   display: flex;
   padding-left: 30px;
   margin-top: 15px;
-  
 `;
 
 export const ImgBackGround = styled.div`
@@ -67,7 +68,7 @@ export const ImgBackGround = styled.div`
   align-items: center;
 
   z-index: 2;
-  background: url(${({ src }) => src}) center no-repeat;
+  background: url(${({ src }) => src});
   background-size: cover;
 `;
 export const ProfileImg = styled.img`
@@ -133,58 +134,66 @@ export const soloRankBox = styled.div`
   color: #879292;
   background-color: #f2f2f2;
   padding: 30px 0;
-  width:300px;
-  
-  display:flex;
+  width: 300px;
+
+  display: flex;
 `;
 export const SoloRankImg = styled.img`
-    padding-left:15px;
-    width: 104px;
-    height: 104px;
-    margin: -5px 0 -10px 0;
-
-`
+  padding-left: 15px;
+  width: 104px;
+  height: 104px;
+  margin: -5px 0 -10px 0;
+`;
 export const SolorRankInfo = styled.div`
-  flex-direction:column;
+  flex-direction: column;
   font-size: 12px;
   line-height: 1.5;
-  padding-left:1px;
-  display:flex;
-  flex-direction:column;
-  padding-top:10px;
-`
+  padding-left: 1px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+`;
 export const RankType = styled.div`
   font-size: 11px;
-    color: #879292;
-`
+  color: #879292;
+`;
 export const soloTier = styled.div`
-      font-size: 15px;
-    font-weight: bold;
-    color: #1f8ecd;
-`
+  font-size: 15px;
+  font-weight: bold;
+  color: #1f8ecd;
+`;
 export const LPBox = styled.div`
-  display:flex;
-`
+  display: flex;
+`;
 export const LP = styled.div`
   color: #555e5e;
   font-weight: bold;
-`
+`;
 export const FreeRankBox = styled.div`
-  margin-top:15px;
+  margin-top: 15px;
   color: #879292;
   background-color: #f2f2f2;
   padding: 10px 0;
-  width:300px;
-  display:flex;
-`
-export const RankInfoBox = styled.div`
-`
+  width: 300px;
+  display: flex;
+`;
+export const RankInfoBox = styled.div``;
 export const MainContainer = styled.div`
-  display:flex;
-`
+  display: flex;
+`;
 export const PvPListBox = styled.div`
-  flex:1;
-`
+  flex: 1;
+  margin-left: 15px;
+`;
 export const Container = styled.div`
-  background-color:#eaeaea;
-`
+  background-color: #eaeaea;
+`;
+export const matchInfoBox = styled.div`
+  flex: 1;
+  height: 96px;
+
+  border-radius: 3px;
+  margin-top: 8px;
+  ${props=>{if(props.winData === 0){return(`background-color:#a3cfec;`)}}}
+  /* ${props => props.winData && `background-color: blue`}; */
+`;

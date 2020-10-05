@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useC } from "react";
+import React, { useEffect, useState, useC, useCallback } from "react";
 import BaseKey from "./API";
 import axios from "axios";
 import { Route } from "react-router-dom";
@@ -12,8 +12,8 @@ const SearchUser = (props) => {
   const [usertierSolo, setUserTierSolo] = useState(null); //솔랭 아라비아
   const [soloRank, SetSoloRank] = useState(null); //솔랭 정보
   const [freeRank, SetFreeRank] = useState(null); //자랭 정보
-  const [matches, SetMatches] = useState([]); //전적 정보
-
+  const [matches, SetMatches] = useState([]); //전적 아이디 정보
+  const [match, SetMatch] = useState([]);
   const ChangeInput = (e) => {
     SetInputName(e.target.value);
   }; //유저 검색창
@@ -30,6 +30,32 @@ const SearchUser = (props) => {
       GoToTotal();
     }
   }; //엔터키
+  const winData = useCallback(
+    (matchData) => {
+      let type;
+      const participantId = match.findIndex((match, index) => {
+        return (
+          match.participantIdentities[index].player.summonerName ===
+          props.match.params.userName
+        );
+      });
+      console.log(match[participantId]);
+      if (participantId < 6) {
+        type = 0;
+      } else {
+        type = 1;
+      }
+      if (matchData.teams[0].wins === "wins" && type === 0) {
+        return 0;
+      } else if (matchData.teams[1].wins === "wins" && type === 1) {
+        return 0;
+      } else {
+        return 1;
+      }
+    },
+    [match]
+  );
+
   const SetRankData = (queueType, data) => {
     if (queueType === "RANKED_SOLO_5x5") {
       SetSoloRank(data[0]);
@@ -92,12 +118,10 @@ const SearchUser = (props) => {
     })();
   }, [userData]); //랭크 데이터 가져오기
   useEffect(() => {
-    console.log(matches);
     (async () => {
       try {
-        console.log(userData.accountId);
         const { data } = await axios.get(
-          `/lol/match/v4/matchlists/by-account/${userData.accountId}`,
+          `/lol/match/v4/matchlists/by-account/${userData.accountId}?endIndex=10`,
           {
             headers: {
               "X-Riot-Token": BaseKey,
@@ -112,28 +136,22 @@ const SearchUser = (props) => {
   }, [userData]); //매치 데이터 가져오기
 
   useEffect(() => {
-    matches.forEach((e)=>{
-      console.log(e);
-    })
-    // const matchesAll = async () => {
-    //   try {
-    //     console.log(matches.gameId)
-    //     const res = await axios.get(
-    //       `/lol/match/v4/matches/${matches}`,
-    //       {
-    //         headers: {
-    //           "X-Riot-Token": BaseKey,
-    //         },
-    //       }
-    //     );
-    //     console.log(res.data);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-    // Promise.all(matches.forEach((element,index) => {
-    //   matchesAll(element)
-    // }))
+    const matchesMap = matches.map(async ({ gameId }) => {
+      try {
+        const { data } = await axios.get(`/lol/match/v4/matches/${gameId}`, {
+          headers: {
+            "X-Riot-Token": BaseKey,
+          },
+        });
+        return data;
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    Promise.all(matchesMap).then((Response) => {
+      SetMatch(Response);
+    });
   }, [matches]);
   return (
     <S.Container>
@@ -243,7 +261,14 @@ const SearchUser = (props) => {
               </S.FreeRankBox>
             </S.RankInfoBox>
           )}
-          <S.PvPListBox>asd</S.PvPListBox>
+          <S.PvPListBox>
+            {match.map((matchData, index) => (
+              <S.matchInfoBox
+                key={index}
+                winData={winData(matchData)}
+              ></S.matchInfoBox>
+            ))}
+          </S.PvPListBox>
         </S.MainContainer>
       </S.MainViewBox>
     </S.Container>
