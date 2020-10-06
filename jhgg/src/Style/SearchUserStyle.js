@@ -191,9 +191,8 @@ export const Container = styled.div`
 export const matchInfoBox = styled.div`
   flex: 1;
   height: 96px;
-
   border-radius: 3px;
   margin-top: 8px;
-  ${props=>{if(props.winData === 0){return(`background-color:#a3cfec;`)}}}
-  /* ${props => props.winData && `background-color: blue`}; */
+  ${props=>{if(props.winData === 1){return(`background-color:#a3cfec;`)} else if(props.winData === 0){return(`background-color:#e2b6b3;`)}}}
+
 `;
