@@ -32,7 +32,6 @@ const SearchUser = (props) => {
   }; //엔터키
   const winData = useCallback(//styledcomponents에서 사용하기 위한 함수(승패색깔)
     (matchData) => {//match배열 map(각각의 게임 정보)
-      console.log(matchData); 
       let type;
       const participantId = match.findIndex((ele,index) => {
         return (
@@ -269,7 +268,7 @@ const SearchUser = (props) => {
               <S.matchInfoBox          
                 key={index}
                 winData={winData(matchData)}
-              ></S.matchInfoBox>
+              >{console.log(matchData)}</S.matchInfoBox>
             ))}
           </S.PvPListBox>
         </S.MainContainer>
@@ -278,3 +277,16 @@ const SearchUser = (props) => {
   );
 };
 export default SearchUser;
+// 무작위 총력전 
+// gameMode: "ARAM"
+// 일반
+// gameMode: "CLASSIC"
+// 솔랭
+// gameMode: "CLASSIC"
+// 자랭
+// gameMode: "CLASSIC"
+// 우르프
+// gameMode: "URF"
+// 단일모드
+// gameMode: "ONEFORALL"
+// 일반은 소환사의 협곡 5:5로 수정예정
