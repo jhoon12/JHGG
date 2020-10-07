@@ -13,7 +13,7 @@ const SearchUser = (props) => {
   const [soloRank, SetSoloRank] = useState(null); //솔랭 정보
   const [freeRank, SetFreeRank] = useState(null); //자랭 정보
   const [matches, SetMatches] = useState([]); //전적 정보 아이디
-  const [match, SetMatch] = useState([]);//전적 정보 배열
+  const [match, SetMatch] = useState([]); //전적 정보 배열
   const ChangeInput = (e) => {
     SetInputName(e.target.value);
   }; //유저 검색창
@@ -30,28 +30,49 @@ const SearchUser = (props) => {
       GoToTotal();
     }
   }; //엔터키
-  const winData = useCallback(//styledcomponents에서 사용하기 위한 함수(승패색깔)
-    (matchData) => {//match배열 map(각각의 게임 정보)
+  const GetGameType = ({ gameMode }) => {
+    console.log(gameMode);
+    switch (gameMode) {
+      case "ARAM":
+        return "무작위 총력전";
+      case "CLASSIC":
+        return "소환사의 협곡 5:5";
+      case "URF":
+        return "우르프";
+      case "ONEFORALL":
+        return "단일모드";
+    }
+  };
+  const winData = useCallback(
+    //styledcomponents에서 사용하기 위한 함수(승패색깔)
+    (matchData) => {
+      //match배열 map(각각의 게임 정보)
       let type;
-      const participantId = match.findIndex((ele,index) => {
+      const participantId = match.findIndex((ele, index) => {
         return (
           matchData.participantIdentities[index].player.summonerName ===
           props.match.params.userName
         );
-      });//params의 이름과 match배열에 담겨있는 인덱스 찾기
-      match.summonerName = matchData.participantIdentities[participantId].player.summonerName;// match 객체 배열에 이름 키 추가
-      if (matchData.participantIdentities[participantId].participantId<6) {//만약 그 게임에서 유저가 레드팀이면
+      }); //params의 이름과 match배열에 담겨있는 인덱스 찾기
+      match.summonerName =
+        matchData.participantIdentities[participantId].player.summonerName; // match 객체 배열에 이름 키 추가
+      if (matchData.participantIdentities[participantId].participantId < 6) {
+        //만약 그 게임에서 유저가 레드팀이면
         type = 1;
-      } else {//블루팀이라면
+      } else {
+        //블루팀이라면
         type = 0;
       }
-      if (matchData.teams[0].win === "Win" && type === 0) {//만약 레드팀이 이겼고, 유저도 레드팀이라면
-       
+      if (matchData.teams[0].win === "Win" && type === 0) {
+        //만약 레드팀이 이겼고, 유저도 레드팀이라면
+
         return 0;
-      } else if (matchData.teams[1].win === "Win" && type === 1) {//만약 블루팀이 이겼고, 유저도 블루팀이라면
-       
+      } else if (matchData.teams[1].win === "Win" && type === 1) {
+        //만약 블루팀이 이겼고, 유저도 블루팀이라면
+
         return 0;
-      } else {//패배했다면
+      } else {
+        //패배했다면
         return 1;
       }
     },
@@ -238,7 +259,6 @@ const SearchUser = (props) => {
                   </div>
                 </S.SolorRankInfo>
               </S.soloRankBox>
-
               <S.FreeRankBox>
                 <S.SoloRankImg
                   src={`https://opgg-static.akamaized.net/images/medals/${freeRank.tier}_${usertierSolo}.png?image=q_auto&v=1`}
@@ -265,10 +285,13 @@ const SearchUser = (props) => {
           )}
           <S.PvPListBox>
             {match.map((matchData, index) => (
-              <S.matchInfoBox          
-                key={index}
-                winData={winData(matchData)}
-              >{console.log(matchData)}</S.matchInfoBox>
+              <S.matchInfoBox key={index} winData={winData(matchData)}>
+                <S.GameTime>
+                  <S.GameType>{GetGameType(matchData)}</S.GameType>
+                  <S.bar />
+                  <S.win></S.win>
+                </S.GameTime>
+              </S.matchInfoBox>
             ))}
           </S.PvPListBox>
         </S.MainContainer>
@@ -277,16 +300,3 @@ const SearchUser = (props) => {
   );
 };
 export default SearchUser;
-// 무작위 총력전 
-// gameMode: "ARAM"
-// 일반
-// gameMode: "CLASSIC"
-// 솔랭
-// gameMode: "CLASSIC"
-// 자랭
-// gameMode: "CLASSIC"
-// 우르프
-// gameMode: "URF"
-// 단일모드
-// gameMode: "ONEFORALL"
-// 일반은 소환사의 협곡 5:5로 수정예정
