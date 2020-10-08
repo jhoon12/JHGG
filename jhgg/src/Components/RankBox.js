@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "../Style/RankBoxStyle";
+import ChampName from "../ChanpJson/champJson.json";
 const RankBox = ({
   userLeagueData,
   soloRank,
@@ -7,9 +8,9 @@ const RankBox = ({
   usertierSolo,
   userTierFree,
 }) => {
+  console.log(ChampName);
   return (
     <>
-
       {userLeagueData && soloRank && freeRank && (
         <S.RankInfoBox>
           <S.soloRankBox>
@@ -27,7 +28,6 @@ const RankBox = ({
                 <div> {`/  ${soloRank.wins}승`}</div>
                 <div>{` ${soloRank.losses}패`}</div>
               </S.LPBox>
-
               <div>
                 {`승률 ${Math.round(
                   (soloRank.wins / (soloRank.wins + soloRank.losses)) * 100
