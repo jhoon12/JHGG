@@ -1,8 +1,8 @@
 import React from "react";
-import Main from "./Main";
+import Main from "./Components/Main";
 import { Route, Switch } from "react-router-dom";
 import { GlobalStyle } from "./Style/MainStyle";
-import SearchUser from "./SearchUser";
+import SearchUser from "./Components/SearchUser";
 function App() {
   return (
     <div>

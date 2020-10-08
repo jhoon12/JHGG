@@ -1,22 +1,5 @@
 import styled, { css, createGlobalStyle } from "styled-components";
 
-export const MainViewBox = styled.div`
-  flex: 1;
-  margin: 0 auto;
-  width: 1000px;
-
-  min-height: 100vh;
-`;
-export const line = styled.div`
-  border-bottom: 1px solid #c6cbcb;
-  width: 155%;
-  margin-left: calc(-50vw + 50%);
-  padding: 0;
-  margin-bottom: 8px;
- `;
-export const MainContainer = styled.div`
-  display: flex;
-`;
 export const PvPListBox = styled.div`
   flex: 1;
   margin-left: 15px;
@@ -28,7 +11,7 @@ export const matchInfoBox = styled.div`
   flex: 1;
   height: 96px;
   border-radius: 3px;
-  margin-top: 8px;
+  margin-bottom: 8px;
   ${(props) => {
     if (props.winData === 1) {
       return `background-color:#a3cfec;`;
@@ -36,11 +19,6 @@ export const matchInfoBox = styled.div`
       return `background-color:#e2b6b3;`;
     }
   }}
-  /* ${(props) => {
-    return props.winData
-      ? "background-color:#a3cfec;"
-      : `background-color:#e2b6b3`;
-  }} */
   display:flex;
 `;
 
@@ -58,18 +36,54 @@ export const GameType = styled.div`
   line-height: 16px;
 `;
 export const bar = styled.div`
-  background: #cea7a7;
-  width: 27px;
+  width: 37px;
   margin: 5px auto;
   height: 2px;
-
+  ${(props) => {
+    if (props.winData === 1) {
+      return `background-color:#99b9cf;`;
+    } else if (props.winData === 0) {
+      return `background-color:#cea7a7;`;
+    }
+  }}
 `;
 export const win = styled.div`
   ${(props) => {
     if (props.winData === 1) {
-      return `color:#a3cfec;`;
+      return `color:#1a78ae;`;
     } else if (props.winData === 0) {
-      return `color:#e2b6b3;`;
+      return `color:#c6443e;`;
     }
   }}
+  font-weight: bold;
+  text-align: center;
+  font-size: 11px;
+  line-height: 16px;
 `;
+export const time = styled.div`
+  text-align: center;
+  font-size: 11px;
+  color: #555;
+  line-height: 16px;
+  padding-top: 8px;
+`;
+export const champInfoBox = styled.div`
+  width: 100px;
+  height: 96px;
+
+`;
+export const InfoImgBox = styled.div`
+  display:flex;
+`
+export const champImg = styled.img` 
+background-color:black;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    overflow: hidden;
+`
+export const SummonerSpell = styled.div`
+`
+export const spell = styled.img``
+export const Runes = styled.div``
+export const Rune = styled.img``
