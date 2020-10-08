@@ -95,7 +95,7 @@ const SearchUser = (props) => {
         );
         const ReArab = (index) => {
           switch (
-            res.data[index].rank //기준이 자랭
+            res.data[index].rank 
           ) {
             case "I":
               return 1;

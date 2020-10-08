@@ -1,6 +1,6 @@
 import React from "react";
 import * as S from "../Style/RankBoxStyle";
-import ChampName from "../ChanpJson/champJson.json";
+
 const RankBox = ({
   userLeagueData,
   soloRank,
@@ -8,7 +8,7 @@ const RankBox = ({
   usertierSolo,
   userTierFree,
 }) => {
-  console.log(ChampName);
+
   return (
     <>
       {userLeagueData && soloRank && freeRank && (
