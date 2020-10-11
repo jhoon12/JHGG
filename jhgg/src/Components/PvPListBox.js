@@ -1,6 +1,8 @@
 import React from "react";
 import Champdata from "../ChanpJson/champJson.json";
+import Spell from "../SpellJson/spell.json";
 import * as S from "../Style/PvPListBoxStyle";
+
 const GetGameType = ({ gameMode }) => {
   switch (gameMode) {
     case "ARAM":
@@ -14,27 +16,60 @@ const GetGameType = ({ gameMode }) => {
   }
 };
 const FindChampKey = () => {
-  let arr =[];
+  let arr = [];
   for (const champKey in Champdata.data) {
     arr.push(Champdata.data[champKey].key);
   }
-  return(arr)
+  return arr;
 };
-FindChampKey();
-
-const findIndex = (matchData)=>{
-  const UserChampIndex = findIndex((ele, index)=>{
-    return(matchData.participants[index].championId === FindChampKey()[index]);
-  })
-  console.log(UserChampIndex);
-}
+const findChampIndex = (matchData) => {
+  const findChamp = matchData.participants.map((ele, index) => {
+    return FindChampKey().find((e) => parseInt(e) === ele.championId);
+  });
+  return findChamp;
+};
+const FindChampName = (champId) => {
+  let arr = [];
+  let key = [];
+  for (const champKey in Champdata.data) {
+    key.push(Champdata.data[champKey]);
+  }
+  for (let id of champId) {
+    key.forEach((e) => {
+      if (e.key === id) {
+        arr.push(e.name);
+      }
+    });
+  }
+  return arr;
+};
+const getSpeel = (matchData) =>{
+  let spell1Arr =[];
+  let spell2Arr = [];
+  let obj = {}
+  for(let spell of matchData){
+    for(let spellKeyData in Spell.data){
+      if(Spell.data[spellKeyData].key === spell.spell1Id){
+        spell1Arr.push(Spell.data[spellKeyData].id)
+      }
+      if(Spell.data[spellKeyData].key === spell.spell2Id){
+        spell1Arr.push(Spell.data[spellKeyData].id);
+      }
+    }
+  }
+  const spellArr = spell1Arr.concat(spell2Arr);
+  return(spellArr);
+}//20개 배열 반환, 0~9번은 1번스펠 10-19번은 2번스펠
 
 const PvPListBox = ({ match, winData }) => {
   return (
     <S.PvPListBox>
       {match.map((matchData, index) => {
-        findIndex(matchData)
         const winningData = winData(matchData);
+        console.log(matchData);
+        matchData.champId = findChampIndex(matchData);
+        matchData.champ =FindChampName(matchData.champId);
+        console.log(getSpeel(matchData.participants))
         return (
           <S.matchInfoBox key={index} winData={winningData}>
             <S.GameTime>
@@ -49,9 +84,9 @@ const PvPListBox = ({ match, winData }) => {
             </S.GameTime>
             <S.champInfoBox>
               <S.InfoImgBox>
-                <S.champImg />
+                <S.champImg src={`https://opgg-static.akamaized.net/images/lol/champion/${(matchData.champ[matchData.summonerIndex]).replace(/ /gi, "")}.png?image=q_auto,w_46&v=1601445791`}/>
                 <S.SummonerSpell>
-                  <S.spell />
+                  {/* <S.spell src={`https://opgg-static.akamaized.net/images/lol/spell/${}.png?image=q_auto&v=1601445791`}/> */}
                   <S.spell />
                 </S.SummonerSpell>
                 <S.Runes>

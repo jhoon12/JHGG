@@ -1,0 +1,85 @@
+{
+    "type": "summoner",
+    "version": "10.20.1",
+    "data": {
+        "SummonerBarrier": {
+            "id": "SummonerBarrier",
+            "name": "Barrier",
+            "key" : 21          
+        },
+        "SummonerBoost": {
+            "id": "SummonerBoost",
+                "name": "Cleanse",
+                "key" :1
+        },
+        "SummonerDot": {
+            "id": "SummonerDot",
+            "name": "Ignite",
+            "key" :14
+            
+        },
+        "SummonerExhaust": {
+            "id": "SummonerExhaust",
+            "name": "Exhaust",
+            "key" :3
+        
+        },
+        "SummonerFlash": {
+            "id": "SummonerFlash",
+            "name": "Flash",
+            "key" : 4
+            
+        },
+        "SummonerHaste": {
+            "id": "SummonerHaste",
+            "name": "Ghost",
+            "key" :6
+           
+        },
+        "SummonerHeal": {
+            "id": "SummonerHeal",
+            "name": "Heal",
+            "key" :7
+            
+        },
+        "SummonerMana": {
+            "id": "SummonerMana",
+            "name": "Clarity",
+            "key":13
+            
+        },
+        "SummonerPoroRecall": {
+            "id": "SummonerPoroRecall",
+            "name": "To the King!"
+         
+        },
+        "SummonerPoroThrow": {
+            "id": "SummonerPoroThrow",
+            "name": "Poro Toss"
+        
+        },
+        "SummonerSmite": {
+            "id": "SummonerSmite",
+            "name": "Smite",
+            "key" :11
+            
+        },
+        "SummonerSnowURFSnowball_Mark": {
+            "id": "SummonerSnowURFSnowball_Mark",
+            "name": "Mark"
+           
+        },
+        "SummonerSnowball": {
+            "id": "SummonerSnowball",
+            "name": "Mark",
+            "key" : 5
+           
+        },
+        "SummonerTeleport": {
+            "id": "SummonerTeleport",
+            "name": "Teleport",
+            "key" :12
+            
+        }
+    }
+}

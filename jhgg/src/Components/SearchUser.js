@@ -28,8 +28,8 @@ const SearchUser = (props) => {
           userData.accountId
         );
       }); //params의 이름과 match배열에 담겨있는 인덱스 찾기
-      match.summonerName =
-        matchData.participantIdentities[participantId].player.summonerName; // match 객체 배열에 이름 키 추가
+      matchData .summonerIndex =
+      participantId; // matchData에 유저 인덱스 추가
       if (matchData.participantIdentities[participantId].participantId < 6) {
         //만약 그 게임에서 유저가 레드팀이면
         type = 1;

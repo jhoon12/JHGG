@@ -70,20 +70,36 @@ export const time = styled.div`
 export const champInfoBox = styled.div`
   width: 100px;
   height: 96px;
-
+  padding-top: 20px;
 `;
-export const InfoImgBox = styled.div`
+export const InfoImgBox = styled.div` 
   display:flex;
+  height:100%;
 `
 export const champImg = styled.img` 
-background-color:black;
     width: 46px;
     height: 46px;
     border-radius: 50%;
     overflow: hidden;
 `
 export const SummonerSpell = styled.div`
+  
+  width:24px;
+  height:40%;
+  margin-left:3px;
 `
-export const spell = styled.img``
-export const Runes = styled.div``
-export const Rune = styled.img``
+export const spell = styled.img`
+width:100%;
+height:60%;
+display:block;
+background-color: black;
+
+`
+export const Runes = styled.div`
+  width:24px;
+  height:40%;`
+export const Rune = styled.img`
+width:100%;
+height:60%;
+display:block;
+background-color: black;`
