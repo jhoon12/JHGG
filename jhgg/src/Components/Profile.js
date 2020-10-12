@@ -18,7 +18,7 @@ const ProfileBox = ({props,soloRank, userData}) => {
             </S.ImgBackGround> //테두리
           )}
           <S.InfoBox>
-            <S.UserName>{props.match.params.userName}</S.UserName>
+            <S.UserName>{userData.name}</S.UserName>
             <S.toolBox>
               <S.reload
                 onClick={() => {

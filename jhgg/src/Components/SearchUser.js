@@ -162,7 +162,7 @@ const SearchUser = (props) => {
     <S.Container>
       <HeaderGG></HeaderGG>
       <S.MainViewBox>
-        <ProfileBox props={props} soloRank={soloRank} userData={userData} />
+        {userData && <ProfileBox props={props} soloRank={soloRank} userData={userData} />}
         <S.line />
         <S.MainContainer>
           <RankBox
