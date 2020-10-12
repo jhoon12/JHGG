@@ -3090,7 +3090,7 @@
           "version": "10.20.1",
           "id": "LeeSin",
           "key": "64",
-          "name": "Lee Sin",
+          "name": "LeeSin",
           "title": "the Blind Monk",
           "blurb": "A master of Ionia's ancient martial arts, Lee Sin is a principled fighter who channels the essence of the dragon spirit to face any challenge. Though he lost his sight many years ago, the warrior-monk has devoted his life to protecting his homeland...",
           "info": {
@@ -3588,7 +3588,7 @@
           "version": "10.20.1",
           "id": "MasterYi",
           "key": "11",
-          "name": "Master Yi",
+          "name": "MasterYi",
           "title": "the Wuju Bladesman",
           "blurb": "Master Yi has tempered his body and sharpened his mind, so that thought and action have become almost as one. Though he chooses to enter into violence only as a last resort, the grace and speed of his blade ensures resolution is always swift. As one of...",
           "info": {
@@ -3638,7 +3638,7 @@
           "version": "10.20.1",
           "id": "MissFortune",
           "key": "21",
-          "name": "Miss Fortune",
+          "name": "MissFortune",
           "title": "the Bounty Hunter",
           "blurb": "A Bilgewater captain famed for her looks but feared for her ruthlessness, Sarah Fortune paints a stark figure among the hardened criminals of the port city. As a child, she witnessed the reaver king Gangplank murder her family—an act she brutally...",
           "info": {

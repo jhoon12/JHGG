@@ -119,7 +119,6 @@ export const KDABox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
 `;
 export const KDA = styled.div`
   display: flex;
@@ -163,7 +162,7 @@ export const LevelData = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-right:10px;
+  margin-right: 10px;
 `;
 
 export const level = styled.div`
@@ -190,29 +189,77 @@ export const Items = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 10px;
-
-`
+`;
 export const itemList = styled.div`
-  height:60px;
-  width:80%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-`
+  height: 60px;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
 export const item = styled.img`
-  height:20px;
-  width:20px;
+  height: 20px;
+  width: 20px;
 
   margin: 1px;
-
-`
+`;
 export const itemlist1 = styled.div`
-  display:flex;
-  justify-content:center;
-  align-items:center;
-` ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 export const itemList2 = styled.div`
-display:flex;
-align-items:center;
-justify-content:center`;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+export const ChampionListBox = styled.div`
+  flex: 1;
+  background-color: white;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: flex;
+`;
+export const Team1 = styled.div`
+  width: 50%;
+  ${(props) => {
+    if (props.winData === 1) {
+      return `background-color:#a3cfec;`;
+    } else if (props.winData === 0) {
+      return `background-color:#e2b6b3;`;
+    }
+  }}
+`;
+export const Team2 = styled.div`
+  width: 50%;
+  ${(props) => {
+    if (props.winData === 1) {
+      return `background-color:#a3cfec;`;
+    } else if (props.winData === 0) {
+      return `background-color:#e2b6b3;`;
+    }
+  }}
+`;
+export const summoner = styled.div`
+  display: flex;
+  width: 80px;
+  height: 18px;
+`;
+export const ChampsImg = styled.img`
+  width: 16px;
+  height: 16px;
+`;
+export const summonerName = styled.div`
+  display: block;
+  width: 60px;
+  padding: 0 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  cursor:pointer;
+  ${(props)=>(props.myId?'color: #222':'color: #555')
+  }
+  
+`;

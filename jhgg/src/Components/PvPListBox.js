@@ -37,7 +37,7 @@ const FindChampName = (champId) => {
   for (let id of champId) {
     key.forEach((e) => {
       if (e.key === id) {
-        arr.push(e.name);
+        arr.push(e.id);
       }
     });
   }
@@ -78,7 +78,42 @@ const ExisfindtMultiKill = (mymatch) => {
     return <S.countMultiKill>{findMultiKill(mymatch)}</S.countMultiKill>;
   }
 };
+const changeSummoner = (name)=>{
+  window.location.replace(`/search/${name}`);
+}
+const summonerMap = (champ, teamNum, participantIdentities,myMatch) => {
+  let arr = [];
+  if (teamNum === 1) {
+    for (let i = 0; i < 5; i++) {
 
+      arr.push(
+        <S.summoner>
+          <S.ChampsImg
+          src={`https://opgg-static.akamaized.net/images/lol/champion/${champ[i]}.png?image=q_auto,w_46&v=1601445791`}
+        ></S.ChampsImg>
+        <S.summonerName myId={myMatch.participantId===i+1} onClick={()=>{changeSummoner(participantIdentities[i].player.summonerName)}}>
+          {participantIdentities[i].player.summonerName}
+        </S.summonerName>
+        </S.summoner>
+        
+      );
+    }
+  } else {
+    for (let i = 5; i < 10; i++) {
+      arr.push(
+        <S.summoner>
+          <S.ChampsImg
+          src={`https://opgg-static.akamaized.net/images/lol/champion/${champ[i]}.png?image=q_auto,w_46&v=1601445791`}
+        ></S.ChampsImg>
+         <S.summonerName myId={myMatch.participantId===i+1 ? 1:0}>
+          {participantIdentities[i].player.summonerName}
+        </S.summonerName>
+        </S.summoner>
+      );
+    }
+  }
+  return arr;
+};
 const PvPListBox = ({ match, winData }) => {
   return (
     <S.PvPListBox>
@@ -88,7 +123,7 @@ const PvPListBox = ({ match, winData }) => {
         matchData.champ = FindChampName(matchData.champId);
         matchData.spell = getSpeel(matchData.participants);
         const mymatch = matchData.participants[matchData.summonerIndex].stats;
-        console.log(mymatch);
+        console.log(mymatch.participantId)
 
         return (
           <S.matchInfoBox key={index} winData={winningData}>
@@ -146,25 +181,76 @@ const PvPListBox = ({ match, winData }) => {
               {ExisfindtMultiKill(mymatch)}
             </S.KDABox>
             <S.LevelData>
-              {/* <S.levelDataBox>asdas</S.levelDataBox> */}
               <S.level>레벨{mymatch.champLevel}</S.level>
             </S.LevelData>
             <S.Items>
               <S.itemList>
                 <S.itemlist1>
-                  <S.item src={ mymatch.item0 ? `http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item0}.png`:`https://opgg-static.akamaized.net/images/pattern/opacity.1.png`}></S.item>
-                  <S.item src={mymatch.item1 ?`http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item1}.png`:`https://opgg-static.akamaized.net/images/pattern/opacity.1.png`}></S.item> 
-                  <S.item src={mymatch.item2 ?`http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item2}.png`:`https://opgg-static.akamaized.net/images/pattern/opacity.1.png`}></S.item> 
-                  <S.item src={mymatch.item6 ?`http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item6}.png`:`https://opgg-static.akamaized.net/images/pattern/opacity.1.png`}></S.item>   
+                  <S.item
+                    src={
+                      mymatch.item0
+                        ? `http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item0}.png`
+                        : `https://opgg-static.akamaized.net/images/pattern/opacity.1.png`
+                    }
+                  ></S.item>
+                  <S.item
+                    src={
+                      mymatch.item1
+                        ? `http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item1}.png`
+                        : `https://opgg-static.akamaized.net/images/pattern/opacity.1.png`
+                    }
+                  ></S.item>
+                  <S.item
+                    src={
+                      mymatch.item2
+                        ? `http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item2}.png`
+                        : `https://opgg-static.akamaized.net/images/pattern/opacity.1.png`
+                    }
+                  ></S.item>
+                  <S.item
+                    src={
+                      mymatch.item6
+                        ? `http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item6}.png`
+                        : `https://opgg-static.akamaized.net/images/pattern/opacity.1.png`
+                    }
+                  ></S.item>
                 </S.itemlist1>
                 <S.itemList2>
-                <S.item src={mymatch.item3 ?`http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item3}.png`:`https://opgg-static.akamaized.net/images/pattern/opacity.1.png`}></S.item>
-                <S.item src={mymatch.item4 ?`http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item4}.png`:`https://opgg-static.akamaized.net/images/pattern/opacity.1.png`}></S.item>
-                <S.item src={mymatch.item5 ?`http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item5}.png`:`https://opgg-static.akamaized.net/images/pattern/opacity.1.png`}></S.item>
-                <S.item src={mymatch.win ? `https://opgg-static.akamaized.net/css3/sprite/images/icon-buildblue-p.png` : `https://opgg-static.akamaized.net/css3/sprite/images/icon-buildred-p.png`}></S.item>
+                  <S.item
+                    src={
+                      mymatch.item3
+                        ? `http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item3}.png`
+                        : `https://opgg-static.akamaized.net/images/pattern/opacity.1.png`
+                    }
+                  ></S.item>
+                  <S.item
+                    src={
+                      mymatch.item4
+                        ? `http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item4}.png`
+                        : `https://opgg-static.akamaized.net/images/pattern/opacity.1.png`
+                    }
+                  ></S.item>
+                  <S.item
+                    src={
+                      mymatch.item5
+                        ? `http://ddragon.leagueoflegends.com/cdn/9.21.1/img/item/${mymatch.item5}.png`
+                        : `https://opgg-static.akamaized.net/images/pattern/opacity.1.png`
+                    }
+                  ></S.item>
+                  <S.item
+                    src={
+                      mymatch.win
+                        ? `https://opgg-static.akamaized.net/css3/sprite/images/icon-buildblue-p.png`
+                        : `https://opgg-static.akamaized.net/css3/sprite/images/icon-buildred-p.png`
+                    }
+                  ></S.item>
                 </S.itemList2>
               </S.itemList>
             </S.Items>
+            <S.ChampionListBox>
+              <S.Team1  winData={winningData}>{summonerMap(matchData.champ, 1, matchData.participantIdentities, mymatch)}</S.Team1>
+              <S.Team2  winData={winningData}>{summonerMap(matchData.champ, 0, matchData.participantIdentities, mymatch)}</S.Team2>
+            </S.ChampionListBox>
           </S.matchInfoBox>
         );
       })}
